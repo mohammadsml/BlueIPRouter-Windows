@@ -22,3 +22,8 @@ dotnet publish src/BlueIPRouter.Service/BlueIPRouter.Service.csproj -c Release -
 ```
 
 Then run `publish\BlueIPRouter.exe`, go to **Service**, and click **Install & Start Service (UAC)**.
+
+## Credits & License
+
+Windows port of [BlueIPRouter](https://github.com/ahorazahedi/BlueIPRouter) by **Ahora Zahedi**.
+Licensed under the MIT License — see [LICENSE](LICENSE).
