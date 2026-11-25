@@ -48,7 +48,7 @@ public static class ServiceClient
             return JsonSerializer.Deserialize<IpcResponse>(line, BirJson.Options)
                    ?? new IpcResponse { Ok = false, Error = "Invalid JSON response." };
         }
-        catch (TimeoutException)
+        catch (System.TimeoutException)
         {
             return new IpcResponse { Ok = false, Error = "Service is not running or did not respond." };
         }
