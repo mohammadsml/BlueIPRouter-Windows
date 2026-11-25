@@ -159,10 +159,7 @@ public static unsafe class Win32Routing
         {
             addr.si_family = AF_INET6;
             var bytes = ip.GetAddressBytes();
-            fixed (byte* p = addr.Ipv6Bytes)
-            {
-                Marshal.Copy(bytes, 0, (IntPtr)p, 16);
-            }
+            Marshal.Copy(bytes, 0, (IntPtr)addr.Ipv6Bytes, 16);
         }
         return addr;
     }
