@@ -1,0 +1,37 @@
+<UserControl x:Class="BlueIPRouter.App.Views.AdaptersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Network Adapters" FontSize="26" FontWeight="SemiBold" Margin="0,0,0,16" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Interfaces}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ui:Card Margin="0,0,0,10" Padding="16">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="240" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding Description}" FontSize="11" Foreground="#88FFFFFF" TextWrapping="Wrap" Margin="0,2,8,0" />
+                                    <TextBlock FontSize="11" Foreground="#88FFFFFF" Margin="0,4,0,0">
+                                        <Run Text="Index: " /><Run Text="{Binding Index, Mode=OneWay}" />
+                                        <Run Text="  MTU: " /><Run Text="{Binding Mtu, Mode=OneWay}" />
+                                    </TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock FontSize="12"><Run Text="IPv4: " Foreground="#88FFFFFF" /><Run Text="{Binding PrimaryIpv4, TargetNullValue='—', Mode=OneWay}" /></TextBlock>
+                                    <TextBlock FontSize="12"><Run Text="Gateway: " Foreground="#88FFFFFF" /><Run Text="{Binding PrimaryGateway, TargetNullValue='—', Mode=OneWay}" /></TextBlock>
+                                    <TextBlock FontSize="12"><Run Text="MAC: " Foreground="#88FFFFFF" /><Run Text="{Binding MacAddress, TargetNullValue='—', Mode=OneWay}" /></TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </ui:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

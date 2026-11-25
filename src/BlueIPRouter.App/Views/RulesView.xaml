@@ -1,0 +1,68 @@
+<UserControl x:Class="BlueIPRouter.App.Views.RulesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,16">
+            <TextBlock Text="Routing Rules" FontSize="26" FontWeight="SemiBold" VerticalAlignment="Center" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <ui:Button Content="Add Rule" Icon="{ui:SymbolIcon Add24}" Appearance="Primary" Click="AddRule_Click" />
+            </StackPanel>
+        </DockPanel>
+
+        <!-- Quick Add Inline Card -->
+        <ui:Card DockPanel.Dock="Top" Margin="0,0,0,14" Padding="14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="180" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="170" />
+                    <ColumnDefinition Width="170" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ui:TextBox x:Name="RuleNameBox" PlaceholderText="Rule name (e.g. Work)" Margin="0,0,8,0" />
+                <ui:TextBox x:Name="RuleDestBox" Grid.Column="1" PlaceholderText="IP, CIDR or domain (comma-separated)" Margin="0,0,8,0" />
+                <ComboBox x:Name="RuleModeBox" Grid.Column="2" SelectedIndex="0" Margin="0,0,8,0">
+                    <ComboBoxItem Content="Interface router" Tag="InterfaceRouter" />
+                    <ComboBoxItem Content="Direct on interface" Tag="InterfaceDirect" />
+                    <ComboBoxItem Content="Specific gateway" Tag="SpecificGateway" />
+                </ComboBox>
+                <ComboBox x:Name="RuleTargetBox" Grid.Column="3" IsEditable="True" Text="Wi-Fi" Margin="0,0,8,0" />
+                <ui:Button Grid.Column="4" Content="Add" Appearance="Secondary" Click="QuickAdd_Click" />
+            </Grid>
+        </ui:Card>
+
+        <!-- Rules List -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding DraftRules}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ui:Card Margin="0,0,0,8" Padding="14">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:ToggleSwitch Grid.Column="0" IsChecked="{Binding Enabled}" Click="RuleToggle_Click" Margin="0,0,14,0" />
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="SemiBold" />
+                                    <TextBlock FontSize="12" Foreground="#AAFFFFFF" Margin="0,2,0,0">
+                                        <Run Text="Via: " />
+                                        <Run Text="{Binding Via.ModeLabel, Mode=OneWay}" />
+                                        <Run Text=" (" />
+                                        <Run Text="{Binding Via.InterfaceName, Mode=OneWay}" />
+                                        <Run Text="{Binding Via.GatewayIp, Mode=OneWay}" />
+                                        <Run Text=")" />
+                                    </TextBlock>
+                                </StackPanel>
+                                <ui:Button Grid.Column="2" Content="Delete" Icon="{ui:SymbolIcon Delete24}" Appearance="Danger"
+                                           Tag="{Binding}" Click="DeleteRule_Click" />
+                            </Grid>
+                        </ui:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

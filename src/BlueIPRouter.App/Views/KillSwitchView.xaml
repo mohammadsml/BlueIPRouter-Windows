@@ -1,0 +1,43 @@
+<UserControl x:Class="BlueIPRouter.App.Views.KillSwitchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Text="Kill Switch (Windows Filtering Platform)" FontSize="26" FontWeight="SemiBold" Margin="0,0,0,16" />
+
+            <ui:Card Margin="0,0,0,12" Padding="16">
+                <DockPanel>
+                    <ui:ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding DraftKillSwitch.Enabled}" Click="Changed_Click" />
+                    <StackPanel>
+                        <TextBlock Text="Enable Kill Switch" FontSize="15" FontWeight="SemiBold" />
+                        <TextBlock Text="Uses WFP kernel filters to block traffic on guarded interfaces when the VPN drops." FontSize="12" Foreground="#AAFFFFFF" />
+                    </StackPanel>
+                </DockPanel>
+            </ui:Card>
+
+            <ui:Card Margin="0,0,0,12" Padding="16">
+                <StackPanel>
+                    <TextBlock Text="Mode &amp; Guarded Interfaces" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,10" />
+                    <ComboBox x:Name="ModeBox" SelectionChanged="ModeBox_SelectionChanged" Margin="0,0,0,12" Width="280" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="Destinations only (block listed ranges)" Tag="Destinations" />
+                        <ComboBoxItem Content="Full System (block all except allow-list)" Tag="FullSystem" />
+                    </ComboBox>
+
+                    <TextBlock Text="Guarded Interface Names (comma-separated, e.g. Wi-Fi, Ethernet)" FontSize="12" Foreground="#AAFFFFFF" Margin="0,0,0,4" />
+                    <ui:TextBox x:Name="InterfacesBox" PlaceholderText="Wi-Fi" TextChanged="InterfacesBox_TextChanged" />
+                </StackPanel>
+            </ui:Card>
+
+            <ui:Card Padding="16">
+                <StackPanel>
+                    <TextBlock Text="Exceptions (Full System Mode)" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,10" />
+                    <CheckBox Content="Allow local networks (RFC1918 + link-local)" IsChecked="{Binding DraftKillSwitch.AllowLocalNetworks}" Click="Changed_Click" Margin="0,0,0,6" />
+                    <CheckBox Content="Allow routing rule destinations" IsChecked="{Binding DraftKillSwitch.AllowRuleDestinations}" Click="Changed_Click" Margin="0,0,0,6" />
+                    <CheckBox Content="Allow DNS servers" IsChecked="{Binding DraftKillSwitch.AllowDns}" Click="Changed_Click" Margin="0,0,0,6" />
+                    <CheckBox Content="Auto-learn VPN core server IPs (xray, sing-box, openvpn, wireguard)" IsChecked="{Binding DraftKillSwitch.LearnVpnServers}" Click="Changed_Click" />
+                </StackPanel>
+            </ui:Card>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

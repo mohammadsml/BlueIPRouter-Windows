@@ -1,0 +1,112 @@
+<ui:FluentWindow x:Class="BlueIPRouter.App.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 Title="BlueIPRouter"
+                 Width="1120"
+                 Height="740"
+                 MinWidth="920"
+                 MinHeight="600"
+                 WindowStartupLocation="CenterScreen"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="Mica">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Title Bar + Primary Toolbar (mirrors macOS toolbar) -->
+        <ui:TitleBar Title="BlueIPRouter" Grid.Row="0" Height="46" ShowMaximize="True" ShowMinimize="True">
+            <ui:TitleBar.TrailingContent>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0">
+                    <ProgressBar IsIndeterminate="True" Width="80" Height="4" Margin="0,0,10,0"
+                                 Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <ui:Button Content="Refresh"
+                               Icon="{ui:SymbolIcon ArrowClockwise24}"
+                               Command="{Binding RefreshCommand}"
+                               Margin="0,0,8,0"
+                               ToolTip="Refresh network state (Ctrl+R)" />
+                    <ui:Button Content="{Binding ApplyButtonText}"
+                               Icon="{ui:SymbolIcon CheckmarkCircle24}"
+                               Appearance="Primary"
+                               IsEnabled="{Binding HasPending}"
+                               Command="{Binding ApplyCommand}"
+                               ToolTip="Write rules to Windows and update routes (Ctrl+Enter)" />
+                </StackPanel>
+            </ui:TitleBar.TrailingContent>
+        </ui:TitleBar>
+
+        <!-- Split View: Sidebar + Detail Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="230" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Sidebar -->
+            <Border Grid.Column="0" Background="#16FFFFFF" BorderBrush="#20FFFFFF" BorderThickness="0,0,1,0">
+                <DockPanel>
+                    <!-- Sidebar Footer (mirrors macOS SidebarFooter) -->
+                    <StackPanel DockPanel.Dock="Bottom" Margin="14,8,14,12">
+                        <Separator Margin="0,0,0,8" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <Ellipse Width="8" Height="8" Fill="{Binding ServiceStatusBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding ServiceStatusText}" FontSize="12" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding InternetVia}" FontSize="11" Foreground="#AAFFFFFF" TextTrimming="CharacterEllipsis" Margin="0,0,0,2" />
+                        <TextBlock Text="Kill switch armed" FontSize="11" Foreground="LimeGreen" Margin="0,0,0,2"
+                                   Visibility="{Binding KillSwitchArmed, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock FontSize="10" Foreground="#77FFFFFF">
+                            <Run Text="Updated " />
+                            <Run Text="{Binding UpdatedTime, Mode=OneWay}" />
+                        </TextBlock>
+                    </StackPanel>
+
+                    <!-- Sidebar Navigation List -->
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="8">
+                        <StackPanel>
+                            <TextBlock Text="OVERVIEW" FontSize="10" FontWeight="SemiBold" Foreground="#88FFFFFF" Margin="10,8,0,4" />
+                            <ui:Button Content="Dashboard" Icon="{ui:SymbolIcon Home24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="Dashboard" Click="NavButton_Click" />
+                            <ui:Button Content="Connections" Icon="{ui:SymbolIcon PlugConnected24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="Connections" Click="NavButton_Click" />
+                            <ui:Button Content="Traffic" Icon="{ui:SymbolIcon DataUsage24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="Traffic" Click="NavButton_Click" />
+                            <ui:Button Content="Speed Test" Icon="{ui:SymbolIcon Gauge24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="SpeedTest" Click="NavButton_Click" />
+
+                            <TextBlock Text="ROUTING" FontSize="10" FontWeight="SemiBold" Foreground="#88FFFFFF" Margin="10,14,0,4" />
+                            <ui:Button Content="Routing Rules" Icon="{ui:SymbolIcon ArrowRouting24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="Rules" Click="NavButton_Click" />
+                            <ui:Button Content="Profiles" Icon="{ui:SymbolIcon Layer24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="Profiles" Click="NavButton_Click" />
+                            <ui:Button Content="Kill Switch" Icon="{ui:SymbolIcon ShieldLock24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="KillSwitch" Click="NavButton_Click" />
+                            <ui:Button Content="Block List" Icon="{ui:SymbolIcon Prohibited24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="BlockList" Click="NavButton_Click" />
+                            <ui:Button Content="Routing Table" Icon="{ui:SymbolIcon Table24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="RoutingTable" Click="NavButton_Click" />
+                            <ui:Button Content="Path Check" Icon="{ui:SymbolIcon Search24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="PathCheck" Click="NavButton_Click" />
+                            <ui:Button Content="DNS" Icon="{ui:SymbolIcon Globe24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="DNS" Click="NavButton_Click" />
+
+                            <TextBlock Text="SYSTEM" FontSize="10" FontWeight="SemiBold" Foreground="#88FFFFFF" Margin="10,14,0,4" />
+                            <ui:Button Content="Network Adapters" Icon="{ui:SymbolIcon NetworkAdapter16}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="Adapters" Click="NavButton_Click" />
+                            <ui:Button Content="Automation" Icon="{ui:SymbolIcon Flash24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="Automation" Click="NavButton_Click" />
+                            <ui:Button Content="Service" Icon="{ui:SymbolIcon Settings24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="Service" Click="NavButton_Click" />
+                            <ui:Button Content="Backup &amp; Restore" Icon="{ui:SymbolIcon Archive24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="Backup" Click="NavButton_Click" />
+                            <ui:Button Content="Activity" Icon="{ui:SymbolIcon History24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="Activity" Click="NavButton_Click" />
+                            <ui:Button Content="About" Icon="{ui:SymbolIcon Info24}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Appearance="Transparent" Tag="About" Click="NavButton_Click" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+
+            <!-- Detail Content Host -->
+            <Grid Grid.Column="1" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <ui:InfoBar Grid.Row="0"
+                            IsOpen="{Binding BannerMessage, Converter={StaticResource NullToBoolConverter}, FallbackValue=False}"
+                            Message="{Binding BannerMessage}"
+                            Margin="0,0,0,12" />
+
+                <ContentControl x:Name="PageHost" Grid.Row="1" />
+            </Grid>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

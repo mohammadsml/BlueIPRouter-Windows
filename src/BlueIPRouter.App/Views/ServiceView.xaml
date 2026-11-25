@@ -1,0 +1,28 @@
+<UserControl x:Class="BlueIPRouter.App.Views.ServiceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    <StackPanel>
+        <TextBlock Text="Background Service &amp; Persistence" FontSize="26" FontWeight="SemiBold" Margin="0,0,0,16" />
+
+        <ui:Card Margin="0,0,0,12" Padding="16">
+            <StackPanel>
+                <TextBlock Text="Windows Service Status" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,6" />
+                <TextBlock Text="{Binding ServiceStatusText}" FontSize="13" Foreground="#CCFFFFFF" Margin="0,0,0,12" />
+                <StackPanel Orientation="Horizontal">
+                    <ui:Button Content="Install &amp; Start Service (UAC)" Appearance="Primary" Click="Install_Click" Margin="0,0,10,0" />
+                    <ui:Button Content="Remove All Routes &amp; WFP" Appearance="Secondary" Click="RemoveAll_Click" Margin="0,0,10,0" />
+                    <ui:Button Content="Uninstall Service (UAC)" Appearance="Danger" Click="Uninstall_Click" />
+                </StackPanel>
+            </StackPanel>
+        </ui:Card>
+
+        <ui:Card Padding="16">
+            <StackPanel>
+                <TextBlock Text="How it works on Windows" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,6" />
+                <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="#AAFFFFFF"
+                           Text="BlueIPRouter.Service runs as LocalSystem at boot, listens for network changes, maintains persistent IPv4 routes via iphlpapi.dll, and enforces Kill Switch / Block List filters via Windows Filtering Platform (WFP). The desktop app communicates with the service over a local Named Pipe." />
+            </StackPanel>
+        </ui:Card>
+    </StackPanel>
+</UserControl>
