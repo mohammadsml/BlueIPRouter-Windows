@@ -13,13 +13,17 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Title Bar + Primary Toolbar (mirrors macOS toolbar) -->
-        <ui:TitleBar Title="BlueIPRouter" Grid.Row="0" Height="46" ShowMaximize="True" ShowMinimize="True">
-            <ui:TitleBar.TrailingContent>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0">
+        <!-- Title Bar -->
+        <ui:TitleBar Title="BlueIPRouter" Grid.Row="0" Height="38" ShowMaximize="True" ShowMinimize="True" />
+
+        <!-- Primary Toolbar (mirrors macOS toolbar) -->
+        <Border Grid.Row="1" Background="#12FFFFFF" BorderBrush="#20FFFFFF" BorderThickness="0,0,0,1" Padding="14,8">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
                     <ProgressBar IsIndeterminate="True" Width="80" Height="4" Margin="0,0,10,0"
                                  Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <ui:Button Content="Refresh"
@@ -34,11 +38,13 @@
                                Command="{Binding ApplyCommand}"
                                ToolTip="Write rules to Windows and update routes (Ctrl+Enter)" />
                 </StackPanel>
-            </ui:TitleBar.TrailingContent>
-        </ui:TitleBar>
+                <TextBlock Text="Native Windows Routing, Split Tunneling &amp; WFP Kill Switch"
+                           VerticalAlignment="Center" FontSize="12" Foreground="#88FFFFFF" />
+            </DockPanel>
+        </Border>
 
         <!-- Split View: Sidebar + Detail Content -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="230" />
                 <ColumnDefinition Width="*" />
