@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="WPF-UI" Version="3.0.5" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
   </ItemGroup>
